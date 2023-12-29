@@ -1,4 +1,4 @@
-package com.example.pedro.authservice;
+package com.messager.authservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
