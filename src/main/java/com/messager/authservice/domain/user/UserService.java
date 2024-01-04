@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.messager.authservice.config.JwtGeneratorInterface;
 import com.messager.authservice.domain.user.Exceptions.UserExistsException;
+import com.messager.authservice.domain.user.Exceptions.UserNotExistsException;
 import com.messager.authservice.domain.user.Exceptions.WrongCredentials;
 
 @Service
@@ -33,14 +34,17 @@ public class UserService {
     return this.jwtGenerator.generateToken(user);
   }
 
-  public String login(User user) throws UserExistsException, WrongCredentials {
-    if (this.userRepository.findByUsername(user.getUsername()) == null) {
-      throw new UserExistsException(user.getUsername());
+  public String login(User user) throws WrongCredentials, UserNotExistsException {
+    User dbUser = this.userRepository.findByUsername(user.getUsername());
+
+    if (dbUser == null) {
+      throw new UserNotExistsException(user.getUsername());
     }
 
-    if (this.userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword()) == null) {
+    Boolean decryptedPassowrd = this.passwordEncoder.matches(user.getPassword(), dbUser.getPassword());
+
+    if (decryptedPassowrd == false)
       throw new WrongCredentials();
-    }
 
     return this.jwtGenerator.generateToken(user);
   }

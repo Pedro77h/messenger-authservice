@@ -18,6 +18,8 @@ import jakarta.servlet.http.HttpServletResponse;
 @RequestMapping("api/v1/auth")
 public class UserConctroller {
 
+  // configurar spring security
+
   @Autowired
   private UserService userService;
 
@@ -34,7 +36,7 @@ public class UserConctroller {
 
       return new ResponseEntity<>(null, HttpStatus.CREATED);
     } catch (Exception e) {
-        System.out.println(e);
+      System.out.println(e);
       return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }
   }
